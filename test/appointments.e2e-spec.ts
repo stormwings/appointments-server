@@ -109,6 +109,163 @@ describe('Appointments API (e2e)', () => {
 
       expect(error.statusCode).toBe(400);
     });
+
+    it('should create appointment with comprehensive FHIR R4 fields', async () => {
+      const appointment = await TestUtils.createAppointment(app, {
+        identifier: [
+          {
+            use: 'official',
+            system: 'http://example.org/appointments',
+            value: 'APT-TEST-001',
+          },
+        ],
+        status: 'booked',
+        serviceCategory: [
+          {
+            coding: [
+              {
+                system: 'http://terminology.hl7.org/CodeSystem/service-category',
+                code: '17',
+                display: 'General Practice',
+              },
+            ],
+          },
+        ],
+        serviceType: [
+          {
+            coding: [
+              {
+                system: 'http://snomed.info/sct',
+                code: '11429006',
+                display: 'Consultation',
+              },
+            ],
+          },
+        ],
+        specialty: [
+          {
+            coding: [
+              {
+                system: 'http://snomed.info/sct',
+                code: '394814009',
+                display: 'General practice',
+              },
+            ],
+          },
+        ],
+        appointmentType: {
+          coding: [
+            {
+              system: 'http://terminology.hl7.org/CodeSystem/v2-0276',
+              code: 'ROUTINE',
+              display: 'Routine appointment',
+            },
+          ],
+        },
+        reasonCode: [
+          {
+            coding: [
+              {
+                system: 'http://snomed.info/sct',
+                code: '25064002',
+                display: 'Headache',
+              },
+            ],
+            text: 'Patient complains of persistent headaches',
+          },
+        ],
+        priority: 5,
+        description: 'Annual physical examination',
+        supportingInformation: [
+          {
+            reference: 'DiagnosticReport/report-123',
+            display: 'Previous lab results',
+          },
+        ],
+        start: '2025-12-15T10:00:00Z',
+        end: '2025-12-15T10:30:00Z',
+        minutesDuration: 30,
+        created: '2025-11-15T20:00:00Z',
+        comment: 'Patient requested morning appointment',
+        patientInstruction: 'Please arrive 15 minutes early',
+        basedOn: [
+          {
+            reference: 'ServiceRequest/req-789',
+            display: 'Annual checkup referral',
+          },
+        ],
+        participant: [
+          {
+            type: [
+              {
+                coding: [
+                  {
+                    system: 'http://terminology.hl7.org/CodeSystem/v3-ParticipationType',
+                    code: 'PPRF',
+                    display: 'primary performer',
+                  },
+                ],
+              },
+            ],
+            actor: {
+              reference: 'Practitioner/dr-smith',
+              type: 'Practitioner',
+              display: 'Dr. Jane Smith',
+            },
+            required: 'required',
+            status: 'accepted',
+          },
+          {
+            type: [
+              {
+                coding: [
+                  {
+                    system: 'http://terminology.hl7.org/CodeSystem/v3-ParticipationType',
+                    code: 'PART',
+                    display: 'Participation',
+                  },
+                ],
+              },
+            ],
+            actor: {
+              reference: 'Patient/patient-fhir-test',
+              type: 'Patient',
+              display: 'John Doe',
+            },
+            required: 'required',
+            status: 'accepted',
+            period: {
+              start: '2025-12-15T10:00:00Z',
+              end: '2025-12-15T10:30:00Z',
+            },
+          },
+        ],
+        requestedPeriod: [
+          {
+            start: '2025-12-15T09:00:00Z',
+            end: '2025-12-15T12:00:00Z',
+          },
+        ],
+      });
+
+      // Verify all FHIR R4 fields are properly stored and retrieved
+      expect(appointment.identifier).toBeDefined();
+      expect(appointment.identifier?.[0]?.value).toBe('APT-TEST-001');
+      expect(appointment.serviceCategory).toBeDefined();
+      expect(appointment.serviceType).toBeDefined();
+      expect(appointment.specialty).toBeDefined();
+      expect(appointment.appointmentType).toBeDefined();
+      expect(appointment.reasonCode).toBeDefined();
+      expect(appointment.priority).toBe(5);
+      expect(appointment.supportingInformation).toBeDefined();
+      expect(appointment.created).toBe('2025-11-15T20:00:00Z');
+      expect(appointment.patientInstruction).toBe('Please arrive 15 minutes early');
+      expect(appointment.basedOn).toBeDefined();
+      expect(appointment.participant).toHaveLength(2);
+      expect(appointment.participant[0].type).toBeDefined();
+      expect(appointment.participant[1].period).toBeDefined();
+      expect(appointment.requestedPeriod).toBeDefined();
+    });
   });
 
   describe('GET /appointments - Retrieve All Appointments', () => {

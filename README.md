@@ -160,13 +160,57 @@ npm run test:e2e
 
 ## FHIR R4 Compliance
 
-This implementation follows the FHIR R4 specification for Appointment resources. Key features include:
+This implementation follows the FHIR R4 specification for Appointment resources with full compliance to the standard. Key features include:
 
-- Required fields: `resourceType`, `status`, `participant` (with at least one Patient)
-- Status lifecycle management with valid state transitions
-- Participant tracking with acceptance statuses
-- Time-based appointment scheduling with validation
-- Support for all optional FHIR Appointment fields
+### Core Fields (Required)
+- **resourceType**: Always set to "Appointment"
+- **status**: Appointment status with lifecycle management (proposed, pending, booked, arrived, fulfilled, cancelled, noshow, entered-in-error, checked-in, waitlist)
+- **participant**: List of participants with at least one required participant
+  - **participant.status**: Participation status (accepted, declined, tentative, needs-action)
+
+### Metadata
+- **id**: Unique identifier (UUID)
+- **meta**: Resource metadata including version and last updated timestamp
+- **identifier**: External identifiers for the appointment
+- **created**: When the appointment was initially created
+
+### Categorization and Classification
+- **serviceCategory**: Broad categorization of the service (e.g., surgery, outpatient)
+- **serviceType**: Specific service to be performed during the appointment
+- **specialty**: Specialty of the practitioner
+- **appointmentType**: Style or type of appointment (e.g., routine, urgent)
+
+### Reason and Context
+- **reasonCode**: Coded reason for the appointment
+- **reasonReference**: Reference to reason for the appointment
+- **basedOn**: Request this appointment is allocated to (e.g., ServiceRequest)
+- **supportingInformation**: Additional information to support the appointment
+
+### Scheduling
+- **start**: When appointment is to take place
+- **end**: When appointment is to conclude
+- **minutesDuration**: Length of the appointment in minutes
+- **slot**: Slots this appointment is filling
+- **requestedPeriod**: Potential date/time intervals requested
+
+### Status and Priority
+- **priority**: Used for re-prioritization decisions (0-10)
+- **cancellationReason**: Coded reason for cancellation (if cancelled)
+
+### Additional Information
+- **description**: Brief description of the appointment
+- **comment**: Additional comments about the appointment
+- **patientInstruction**: Patient-specific instructions
+
+### Participant Details
+- **participant.type**: Role of the participant (e.g., primary performer, participation)
+- **participant.actor**: Reference to the actual participant (Patient, Practitioner, etc.)
+- **participant.required**: Whether the participant is required, optional, or information-only
+- **participant.period**: Period of time the participant is involved
+
+### Status Lifecycle Management
+- Valid state transitions enforced between statuses
+- Prevents invalid status changes (e.g., cannot cancel a fulfilled appointment)
 
 For complete FHIR R4 specification details, see: https://hl7.org/fhir/R4/appointment.html
 
