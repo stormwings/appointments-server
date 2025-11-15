@@ -124,7 +124,8 @@ describe('Appointments API (e2e)', () => {
           {
             coding: [
               {
-                system: 'http://terminology.hl7.org/CodeSystem/service-category',
+                system:
+                  'http://terminology.hl7.org/CodeSystem/service-category',
                 code: '17',
                 display: 'General Practice',
               },
@@ -200,7 +201,8 @@ describe('Appointments API (e2e)', () => {
               {
                 coding: [
                   {
-                    system: 'http://terminology.hl7.org/CodeSystem/v3-ParticipationType',
+                    system:
+                      'http://terminology.hl7.org/CodeSystem/v3-ParticipationType',
                     code: 'PPRF',
                     display: 'primary performer',
                   },
@@ -220,7 +222,8 @@ describe('Appointments API (e2e)', () => {
               {
                 coding: [
                   {
-                    system: 'http://terminology.hl7.org/CodeSystem/v3-ParticipationType',
+                    system:
+                      'http://terminology.hl7.org/CodeSystem/v3-ParticipationType',
                     code: 'PART',
                     display: 'Participation',
                   },
@@ -259,7 +262,9 @@ describe('Appointments API (e2e)', () => {
       expect(appointment.priority).toBe(5);
       expect(appointment.supportingInformation).toBeDefined();
       expect(appointment.created).toBe('2025-11-15T20:00:00Z');
-      expect(appointment.patientInstruction).toBe('Please arrive 15 minutes early');
+      expect(appointment.patientInstruction).toBe(
+        'Please arrive 15 minutes early',
+      );
       expect(appointment.basedOn).toBeDefined();
       expect(appointment.participant).toHaveLength(2);
       expect(appointment.participant[0].type).toBeDefined();
