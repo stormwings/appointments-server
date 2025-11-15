@@ -1,98 +1,194 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# FHIR R4 Appointments API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+A production-ready RESTful API for managing healthcare appointments using the FHIR R4 (Fast Healthcare Interoperability Resources) standard.
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This NestJS application provides a comprehensive implementation of FHIR R4 Appointment resources with full CRUD operations, validation, and persistence using SQLite. The API is designed to be FHIR-compliant and follows healthcare industry standards for appointment management.
 
-## Project setup
+## Features
 
-```bash
-$ npm install
-```
+- **FHIR R4 Compliant**: Full implementation of FHIR R4 Appointment resource specification
+- **RESTful API**: Standard HTTP methods (GET, POST, PATCH, DELETE) for appointment management
+- **Validation**: Automatic request/response validation using class-validator and FHIR rules
+- **Database Persistence**: SQLite database with Sequelize ORM for reliable data storage
+- **Type Safety**: Full TypeScript implementation with comprehensive type definitions
+- **Business Rules**: Enforced FHIR status transitions and appointment constraints
+- **Seeded Data**: Automatic database seeding with sample appointments for testing
+- **Docker Ready**: Production-ready Docker and Docker Compose configurations
 
-## Compile and run the project
+## API Endpoints
 
-```bash
-# development
-$ npm run start
+The API provides five main endpoints:
 
-# watch mode
-$ npm run start:dev
+1. **GET /appointments** - Search and filter appointments with pagination
+2. **GET /appointments/:id** - Retrieve a specific appointment by ID
+3. **POST /appointments** - Create a new appointment with validation
+4. **PATCH /appointments/:id/status** - Update appointment status
+5. **DELETE /appointments/:id** - Cancel an appointment (soft delete)
 
-# production mode
-$ npm run start:prod
-```
+See [API.md](./API.md) for detailed endpoint documentation and examples.
 
-## Run tests
+## Quick Start
 
-```bash
-# unit tests
-$ npm run test
+### Option 1: Docker (Recommended for Production)
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+The easiest way to run the application:
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Build and start with Docker Compose
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop the application
+docker-compose down
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+The API will be available at `http://localhost:8000`.
 
-## Resources
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete Docker deployment documentation.
 
-Check out a few resources that may come in handy when working with NestJS:
+### Option 2: Local Development
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+#### Installation
 
-## Support
+```bash
+npm install
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+#### Running the Application
 
-## Stay in touch
+```bash
+# Development mode with hot reload
+npm run start:dev
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+# Production mode
+npm run start:prod
+
+# Standard development
+npm run start
+```
+
+The API will be available at `http://localhost:8000` (or the port specified in the `PORT` environment variable).
+
+### Testing the API
+
+Once the application is running, you can test it with curl:
+
+```bash
+# Get all appointments
+curl http://localhost:8000/appointments
+
+# Get a specific appointment
+curl http://localhost:8000/appointments/{appointment-id}
+
+# Create a new appointment
+curl -X POST http://localhost:8000/appointments \
+  -H "Content-Type: application/json" \
+  -d '{
+    "status": "booked",
+    "description": "Annual checkup",
+    "start": "2025-12-01T10:00:00Z",
+    "end": "2025-12-01T10:30:00Z",
+    "participant": [{
+      "actor": {
+        "reference": "Patient/patient-123",
+        "type": "Patient",
+        "display": "John Doe"
+      },
+      "status": "accepted"
+    }]
+  }'
+```
+
+## Project Structure
+
+```
+appointments/
+├── src/
+│   ├── appointments/          # Appointments module
+│   │   ├── dto/              # Data Transfer Objects for validation
+│   │   ├── appointments.controller.ts  # REST API endpoints
+│   │   ├── appointments.service.ts     # Business logic layer
+│   │   ├── appointments.repository.ts  # Data access layer
+│   │   └── appointments.module.ts      # Module definition
+│   ├── database/             # Database configuration
+│   │   ├── models/           # Sequelize database models
+│   │   ├── database.config.ts
+│   │   ├── database.module.ts
+│   │   └── database.providers.ts
+│   ├── app.module.ts         # Root application module
+│   └── main.ts               # Application entry point
+├── test/                     # End-to-end tests
+├── appointment.ts            # FHIR R4 type definitions and utilities
+├── data/                     # SQLite database storage
+├── Dockerfile                # Docker image configuration
+├── docker-compose.yml        # Docker Compose orchestration
+├── .dockerignore             # Docker ignore rules
+├── API.md                    # Detailed API documentation
+├── DEPLOYMENT.md             # Docker deployment guide
+├── CLAUDE.md                 # Development guidelines
+└── README.md                 # This file
+```
+
+## Development Commands
+
+```bash
+# Format code
+npm run format
+
+# Lint and auto-fix
+npm run lint
+
+# Build for production
+npm run build
+
+# Run unit tests
+npm run test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage
+npm run test:cov
+
+# Run end-to-end tests
+npm run test:e2e
+```
+
+## FHIR R4 Compliance
+
+This implementation follows the FHIR R4 specification for Appointment resources. Key features include:
+
+- Required fields: `resourceType`, `status`, `participant` (with at least one Patient)
+- Status lifecycle management with valid state transitions
+- Participant tracking with acceptance statuses
+- Time-based appointment scheduling with validation
+- Support for all optional FHIR Appointment fields
+
+For complete FHIR R4 specification details, see: https://hl7.org/fhir/R4/appointment.html
+
+## Database
+
+The application uses SQLite for data persistence with the following schema:
+
+- **appointments** table: Stores main appointment data
+- **participants** table: Stores appointment participants with foreign key relationship
+
+The database file is stored in `./data/appointments.sqlite` and is automatically created on first run.
+
+## Technologies Used
+
+- **NestJS** - Progressive Node.js framework
+- **TypeScript** - Type-safe JavaScript
+- **Sequelize** - ORM for database operations
+- **SQLite** - Lightweight relational database
+- **class-validator** - DTO validation
+- **class-transformer** - Object transformation
+- **Docker** - Containerization and deployment
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+MIT
