@@ -128,16 +128,31 @@ export class AppointmentsRepository {
         {
           id,
           resourceType: 'Appointment',
+          identifier: appointment.identifier,
           status: appointment.status,
+          cancellationReason: appointment.cancellationReason,
+          serviceCategory: appointment.serviceCategory,
+          serviceType: appointment.serviceType,
+          specialty: appointment.specialty,
+          appointmentType: appointment.appointmentType,
+          reasonCode: appointment.reasonCode,
+          reasonReference: appointment.reasonReference,
+          priority: appointment.priority,
+          description: appointment.description,
+          supportingInformation: appointment.supportingInformation,
+          start: appointment.start,
+          end: appointment.end,
+          minutesDuration: appointment.minutesDuration,
+          slot: appointment.slot,
+          created: appointment.created || now,
+          comment: appointment.comment,
+          patientInstruction: appointment.patientInstruction,
+          basedOn: appointment.basedOn,
+          requestedPeriod: appointment.requestedPeriod,
           meta: {
             versionId: '1',
             lastUpdated: now,
           },
-          description: appointment.description,
-          start: appointment.start,
-          end: appointment.end,
-          minutesDuration: appointment.minutesDuration,
-          comment: appointment.comment,
         },
         { transaction },
       );
@@ -147,9 +162,11 @@ export class AppointmentsRepository {
           ParticipantModel.create(
             {
               appointmentId: id,
+              type: participant.type,
               actor: participant.actor,
               required: participant.required,
               status: participant.status,
+              period: participant.period,
             },
             { transaction },
           ),
@@ -211,9 +228,11 @@ export class AppointmentsRepository {
             ParticipantModel.create(
               {
                 appointmentId: id,
+                type: participant.type,
                 actor: participant.actor,
                 required: participant.required,
                 status: participant.status,
+                period: participant.period,
               },
               { transaction },
             ),
@@ -295,22 +314,39 @@ export class AppointmentsRepository {
     try {
       const participants: AppointmentParticipant[] =
         model.participants?.map((p) => ({
+          type: p.type,
           actor: p.actor as any,
           required: p.required,
           status: p.status,
+          period: p.period,
         })) || [];
 
       return {
         resourceType: 'Appointment',
         id: model.id,
         meta: model.meta,
+        identifier: model.identifier,
         status: model.status,
+        cancellationReason: model.cancellationReason,
+        serviceCategory: model.serviceCategory,
+        serviceType: model.serviceType,
+        specialty: model.specialty,
+        appointmentType: model.appointmentType,
+        reasonCode: model.reasonCode,
+        reasonReference: model.reasonReference,
+        priority: model.priority,
         description: model.description,
+        supportingInformation: model.supportingInformation,
         start: model.start,
         end: model.end,
         minutesDuration: model.minutesDuration,
+        slot: model.slot,
+        created: model.created,
         comment: model.comment,
+        patientInstruction: model.patientInstruction,
+        basedOn: model.basedOn,
         participant: participants,
+        requestedPeriod: model.requestedPeriod,
       };
     } catch (error) {
       this.logger.error('Failed to convert model to appointment', error);

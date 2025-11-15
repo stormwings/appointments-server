@@ -81,17 +81,34 @@ export class AppointmentsService implements OnModuleInit {
     try {
       const appointment: Omit<Appointment, 'id' | 'meta'> = {
         resourceType: 'Appointment',
+        identifier: createDto.identifier,
         status: createDto.status,
+        cancellationReason: createDto.cancellationReason,
+        serviceCategory: createDto.serviceCategory,
+        serviceType: createDto.serviceType,
+        specialty: createDto.specialty,
+        appointmentType: createDto.appointmentType,
+        reasonCode: createDto.reasonCode,
+        reasonReference: createDto.reasonReference,
+        priority: createDto.priority,
         description: createDto.description,
+        supportingInformation: createDto.supportingInformation,
         start: createDto.start,
         end: createDto.end,
         minutesDuration: createDto.minutesDuration,
+        slot: createDto.slot,
+        created: createDto.created,
         comment: createDto.comment,
+        patientInstruction: createDto.patientInstruction,
+        basedOn: createDto.basedOn,
         participant: createDto.participant.map((p) => ({
+          type: p.type,
           actor: p.actor as any,
           required: p.required,
           status: p.status,
+          period: p.period,
         })),
+        requestedPeriod: createDto.requestedPeriod,
       };
 
       const validation = validateAppointment(appointment as Appointment);

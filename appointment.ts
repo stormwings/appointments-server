@@ -30,7 +30,35 @@ export interface Reference<T = string> {
   display?: string;
 }
 
+export interface Identifier {
+  use?: 'usual' | 'official' | 'temp' | 'secondary' | 'old';
+  type?: CodeableConcept;
+  system?: string;
+  value?: string;
+  period?: Period;
+  assigner?: Reference;
+}
+
+export interface CodeableConcept {
+  coding?: Coding[];
+  text?: string;
+}
+
+export interface Coding {
+  system?: string;
+  version?: string;
+  code?: string;
+  display?: string;
+  userSelected?: boolean;
+}
+
+export interface Period {
+  start?: string;
+  end?: string;
+}
+
 export interface AppointmentParticipant {
+  type?: CodeableConcept[];
   actor?: Reference<
     | 'Patient'
     | 'Practitioner'
@@ -42,6 +70,7 @@ export interface AppointmentParticipant {
   >;
   required?: ParticipantRequired;
   status: ParticipantStatus;
+  period?: Period;
 }
 
 export interface Meta {
@@ -53,13 +82,28 @@ export interface Appointment {
   id?: string;
   resourceType: 'Appointment';
   meta?: Meta;
+  identifier?: Identifier[];
   status: AppointmentStatus;
+  cancellationReason?: CodeableConcept;
+  serviceCategory?: CodeableConcept[];
+  serviceType?: CodeableConcept[];
+  specialty?: CodeableConcept[];
+  appointmentType?: CodeableConcept;
+  reasonCode?: CodeableConcept[];
+  reasonReference?: Reference[];
+  priority?: number;
   description?: string;
+  supportingInformation?: Reference[];
   start?: string;
   end?: string;
   minutesDuration?: number;
+  slot?: Reference[];
+  created?: string;
   comment?: string;
+  patientInstruction?: string;
+  basedOn?: Reference[];
   participant: AppointmentParticipant[];
+  requestedPeriod?: Period[];
 }
 
 export function validateAppointment(appointment: Appointment): {

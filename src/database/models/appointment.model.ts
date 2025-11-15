@@ -10,7 +10,14 @@ import {
   Index,
 } from 'sequelize-typescript';
 import { ParticipantModel } from './participant.model';
-import type { AppointmentStatus, Meta } from '../../../appointment';
+import type {
+  AppointmentStatus,
+  Meta,
+  Identifier,
+  CodeableConcept,
+  Reference,
+  Period,
+} from '../../../appointment';
 
 @Table({
   tableName: 'appointments',
@@ -38,6 +45,12 @@ export class AppointmentModel extends Model {
   })
   declare meta?: Meta;
 
+  @Column({
+    type: DataType.JSON,
+    allowNull: true,
+  })
+  declare identifier?: Identifier[];
+
   @Index
   @Column({
     type: DataType.STRING,
@@ -46,10 +59,64 @@ export class AppointmentModel extends Model {
   declare status: AppointmentStatus;
 
   @Column({
+    type: DataType.JSON,
+    allowNull: true,
+  })
+  declare cancellationReason?: CodeableConcept;
+
+  @Column({
+    type: DataType.JSON,
+    allowNull: true,
+  })
+  declare serviceCategory?: CodeableConcept[];
+
+  @Column({
+    type: DataType.JSON,
+    allowNull: true,
+  })
+  declare serviceType?: CodeableConcept[];
+
+  @Column({
+    type: DataType.JSON,
+    allowNull: true,
+  })
+  declare specialty?: CodeableConcept[];
+
+  @Column({
+    type: DataType.JSON,
+    allowNull: true,
+  })
+  declare appointmentType?: CodeableConcept;
+
+  @Column({
+    type: DataType.JSON,
+    allowNull: true,
+  })
+  declare reasonCode?: CodeableConcept[];
+
+  @Column({
+    type: DataType.JSON,
+    allowNull: true,
+  })
+  declare reasonReference?: Reference[];
+
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+  })
+  declare priority?: number;
+
+  @Column({
     type: DataType.TEXT,
     allowNull: true,
   })
   declare description?: string;
+
+  @Column({
+    type: DataType.JSON,
+    allowNull: true,
+  })
+  declare supportingInformation?: Reference[];
 
   @Index
   @Column({
@@ -71,10 +138,40 @@ export class AppointmentModel extends Model {
   declare minutesDuration?: number;
 
   @Column({
+    type: DataType.JSON,
+    allowNull: true,
+  })
+  declare slot?: Reference[];
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  declare created?: string;
+
+  @Column({
     type: DataType.TEXT,
     allowNull: true,
   })
   declare comment?: string;
+
+  @Column({
+    type: DataType.TEXT,
+    allowNull: true,
+  })
+  declare patientInstruction?: string;
+
+  @Column({
+    type: DataType.JSON,
+    allowNull: true,
+  })
+  declare basedOn?: Reference[];
+
+  @Column({
+    type: DataType.JSON,
+    allowNull: true,
+  })
+  declare requestedPeriod?: Period[];
 
   @HasMany(() => ParticipantModel, {
     foreignKey: 'appointmentId',
