@@ -18,6 +18,20 @@ import {
   ParticipantRequired,
 } from '../../../appointment';
 
+export class ReferenceDto {
+  @IsOptional()
+  @IsString()
+  reference?: string;
+
+  @IsOptional()
+  @IsString()
+  type?: string;
+
+  @IsOptional()
+  @IsString()
+  display?: string;
+}
+
 export class CodingDto {
   @IsOptional()
   @IsString()
@@ -88,20 +102,6 @@ export class IdentifierDto {
   @ValidateNested()
   @Type(() => ReferenceDto)
   assigner?: ReferenceDto;
-}
-
-export class ReferenceDto {
-  @IsOptional()
-  @IsString()
-  reference?: string;
-
-  @IsOptional()
-  @IsString()
-  type?: string;
-
-  @IsOptional()
-  @IsString()
-  display?: string;
 }
 
 export class ParticipantDto {
