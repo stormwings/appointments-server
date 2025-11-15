@@ -13,6 +13,8 @@ import type {
   ParticipantStatus,
   ParticipantRequired,
   Reference,
+  CodeableConcept,
+  Period,
 } from '../../../appointment';
 
 @Table({
@@ -42,6 +44,12 @@ export class ParticipantModel extends Model {
     type: DataType.JSON,
     allowNull: true,
   })
+  declare type?: CodeableConcept[];
+
+  @Column({
+    type: DataType.JSON,
+    allowNull: true,
+  })
   declare actor?: Reference;
 
   @Column({
@@ -55,4 +63,10 @@ export class ParticipantModel extends Model {
     allowNull: false,
   })
   declare status: ParticipantStatus;
+
+  @Column({
+    type: DataType.JSON,
+    allowNull: true,
+  })
+  declare period?: Period;
 }
