@@ -1,0 +1,31 @@
+services:
+  appointments-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fhir-appointments-api
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=production
+      - PORT=8000
+    volumes:
+      # Persist SQLite database
+      - appointments-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:8000/appointments', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    networks:
+      - appointments-network
+
+volumes:
+  appointments-data:
+    driver: local
+
+networks:
+  appointments-network:
+    driver: bridge
